@@ -67,4 +67,36 @@ const deleteFinance = async (req, res) => {
   }
 };
 
-module.exports = { getFinances, createFinance, updateFinance, deleteFinance };
+const getFinanceReport = async (req, res) => {
+  try {
+    const finances = await Finance.find({ user: req.user.id });
+
+    const totalIncomes = finances
+      .filter((finance) => finance.type === "income")
+      .reduce((sum, finance) => sum + finance.amount, 0);
+
+    const totalExpenses = finances
+      .filter((finance) => finance.type === "expense")
+      .reduce((sum, finance) => sum + finance.amount, 0);
+
+    const balance = totalIncomes - totalExpenses;
+
+    res.status(200).json({
+      totalIncomes,
+      totalExpenses,
+      balance,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+
+module.exports = {
+  getFinances,
+  createFinance,
+  updateFinance,
+  deleteFinance,
+  getFinanceReport,
+};
+
