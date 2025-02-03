@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-// Schema untuk keuangan
-const financeSchema = mongoose.Schema(
+// Definisi schema untuk Reminder
+const reminderSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -16,15 +16,13 @@ const financeSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    type: {
-      type: String,
+    dueDate: {
+      type: Date,
       required: true,
-      enum: ["income", "expense"], 
     },
-    category: {
-      type: String,
-      required: true,
-      enum: ["food", "transportation", "entertainment", "utilities", "others"], 
+    isPaid: {
+      type: Boolean,
+      default: false,
     },
   },
   {
@@ -32,4 +30,7 @@ const financeSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Finance", financeSchema);
+// Buat model berdasarkan schema
+const Reminder = mongoose.model("Reminder", reminderSchema);
+
+module.exports = Reminder;
